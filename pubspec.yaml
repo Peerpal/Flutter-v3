@@ -1,4 +1,5 @@
 name: flutterwave_standard
+publish_to: none
 description: Flutterwave's official library that wraps the standard implementation.
 version: 1.0.7
 homepage: https://github.com/Flutterwave/flutter_standard
@@ -13,7 +14,11 @@ dependencies:
   http: ^0.13.0
   fluttertoast: ^8.0.8
   webview_flutter: ^3.0.4
-  modal_bottom_sheet: ^2.1.0
+  modal_bottom_sheet:
+    git:
+      url: https://github.com/eli1stark/modal_bottom_sheet.git
+      ref: 2b3f9f84f46418c1b337968c88883995f65f47e7
+      path: modal_bottom_sheet
   flutter_inappwebview: ^5.7.2+3
 
 dev_dependencies:
