@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -21,7 +20,6 @@ class StandardWebView extends StatefulWidget {
 }
 
 class _StandardWebViewAppState extends State<StandardWebView> {
-
   @override
   void initState() {
     if (Platform.isAndroid) {
@@ -32,38 +30,40 @@ class _StandardWebViewAppState extends State<StandardWebView> {
 
   @override
   Widget build(BuildContext context) {
-
-    final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers = {
-      Factory(() => EagerGestureRecognizer())
-    };
+    final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers = {Factory(() => EagerGestureRecognizer())};
 
     UniqueKey _key = UniqueKey();
 
     AppBar? appBar;
     if (widget.style != null) {
       appBar = AppBar(
-        title: Text(
-          widget.style!.getAppBarText(),
-          style: widget.style!.getAppBarTextStyle(),
-        ),
+        elevation: 0.0,
+        backgroundColor: Colors.transparent,
+        // title: Text(
+        //   widget.style!.getAppBarText(),
+        //   style: widget.style!.getAppBarTextStyle(),
+        // ),
       );
     }
 
-      return SafeArea(
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height * .7,
+      child: SafeArea(
           child: Scaffold(
-            key: _key,
-            appBar: appBar,
-            body: WebView(
-              initialUrl: widget.url,
-              javascriptMode:  JavascriptMode.unrestricted,
-              gestureRecognizers: gestureRecognizers,
-              onPageStarted: (webUrl) {
-                final url = Uri.parse(webUrl);
-                _processUrl(url);
-              },
-            ),
-          )
-      );
+        key: _key,
+        appBar: appBar,
+        body: WebView(
+          initialUrl: widget.url,
+          javascriptMode: JavascriptMode.unrestricted,
+          gestureRecognizers: gestureRecognizers,
+          onPageStarted: (webUrl) {
+            final url = Uri.parse(webUrl);
+            _processUrl(url);
+          },
+        ),
+      )),
+    );
   }
 
   _processUrl(Uri uri) {
@@ -103,11 +103,7 @@ class _StandardWebViewAppState extends State<StandardWebView> {
     final id = json["id"];
 
     final ChargeResponse chargeResponse = ChargeResponse(
-        status: status,
-        transactionId: "$id",
-        txRef: txRef,
-        success: status?.contains("success") == true
-    );
+        status: status, transactionId: "$id", txRef: txRef, success: status?.contains("success") == true);
     Navigator.pop(context, chargeResponse);
   }
 
@@ -115,12 +111,8 @@ class _StandardWebViewAppState extends State<StandardWebView> {
     final status = uri.queryParameters["status"];
     final txRef = uri.queryParameters["tx_ref"];
     final id = uri.queryParameters["transaction_id"];
-    final ChargeResponse chargeResponse = ChargeResponse(
-      status: status,
-      transactionId: id,
-      txRef: txRef,
-      success: status?.contains("success") == true
-    );
+    final ChargeResponse chargeResponse =
+        ChargeResponse(status: status, transactionId: id, txRef: txRef, success: status?.contains("success") == true);
     Navigator.pop(context, chargeResponse);
   }
 }
