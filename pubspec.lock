@@ -308,10 +308,10 @@ packages:
     dependency: "direct main"
     description:
       name: modal_bottom_sheet
-      sha256: fc7c6b5848b837122dc1db913545ef673d74222090cad63a2840507e3d483235
+      sha256: "3bba63c62d35c931bce7f8ae23a47f9a05836d8cb3c11122ada64e0b2f3d718f"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.0"
+    version: "3.0.0-pre"
   package_config:
     dependency: transitive
     description:
