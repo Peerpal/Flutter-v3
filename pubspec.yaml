@@ -3,14 +3,14 @@ description: Flutterwave's official library that wraps the standard implementati
 version: 1.0.7
 homepage: https://github.com/Flutterwave/flutter_standard
 environment:
-  sdk: ">=3.0.6 <4.0.0"
+  sdk: ">=3.1.2 <4.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  http: ^0.13.0
+  http: ^1.0.0
   fluttertoast: ^8.0.8
   webview_flutter: ^4.4.2
   modal_bottom_sheet: ^3.0.0-pre
