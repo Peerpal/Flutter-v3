@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -20,17 +19,44 @@ class StandardWebView extends StatefulWidget {
 }
 
 class _StandardWebViewAppState extends State<StandardWebView> {
+  WebViewController? _controller;
+
   @override
   void initState() {
-    if (Platform.isAndroid) {
-      WebView.platform = SurfaceAndroidWebView();
-    }
+    // if (Platform.isAndroid) {
+    //   WebViewWidget.platform = SurfaceAndroidWebView();
+    // }
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            // Update loading bar.
+          },
+          onPageStarted: (String webUrl) {
+            final url = Uri.parse(webUrl);
+            _processUrl(url);
+          },
+          onPageFinished: (String url) {},
+          onWebResourceError: (WebResourceError error) {},
+          onNavigationRequest: (NavigationRequest request) {
+            if (request.url.startsWith('https://www.youtube.com/')) {
+              return NavigationDecision.prevent;
+            }
+            return NavigationDecision.navigate;
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse(widget.url));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers = {Factory(() => EagerGestureRecognizer())};
+    final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers = {
+      Factory(() => EagerGestureRecognizer())
+    };
 
     UniqueKey _key = UniqueKey();
 
@@ -46,23 +72,15 @@ class _StandardWebViewAppState extends State<StandardWebView> {
       );
     }
 
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height * .7,
-      child: SafeArea(
-          child: Scaffold(
+    return SafeArea(
+      child: Scaffold(
         key: _key,
         appBar: appBar,
-        body: WebView(
-          initialUrl: widget.url,
-          javascriptMode: JavascriptMode.unrestricted,
+        body: WebViewWidget(
+          controller: _controller!,
           gestureRecognizers: gestureRecognizers,
-          onPageStarted: (webUrl) {
-            final url = Uri.parse(webUrl);
-            _processUrl(url);
-          },
         ),
-      )),
+      ),
     );
   }
 
@@ -103,7 +121,10 @@ class _StandardWebViewAppState extends State<StandardWebView> {
     final id = json["id"];
 
     final ChargeResponse chargeResponse = ChargeResponse(
-        status: status, transactionId: "$id", txRef: txRef, success: status?.contains("success") == true);
+        status: status,
+        transactionId: "$id",
+        txRef: txRef,
+        success: status?.contains("success") == true);
     Navigator.pop(context, chargeResponse);
   }
 
@@ -111,8 +132,12 @@ class _StandardWebViewAppState extends State<StandardWebView> {
     final status = uri.queryParameters["status"];
     final txRef = uri.queryParameters["tx_ref"];
     final id = uri.queryParameters["transaction_id"];
-    final ChargeResponse chargeResponse =
-        ChargeResponse(status: status, transactionId: id, txRef: txRef, success: status?.contains("success") == true);
+    final ChargeResponse chargeResponse = ChargeResponse(
+      status: status,
+      transactionId: id,
+      txRef: txRef,
+      success: status?.contains("success") == true,
+    );
     Navigator.pop(context, chargeResponse);
   }
 }
