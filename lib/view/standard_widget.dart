@@ -18,7 +18,7 @@ class StandardPaymentWidget extends StatefulWidget {
 class _StandardPaymentWidgetAppState extends State<StandardPaymentWidget>
     implements TransactionCallBack {
   var options = InAppBrowserClassOptions(
-    crossPlatform: InAppBrowserOptions(hideUrlBar: true),
+    crossPlatform: InAppBrowserOptions(hideUrlBar: true, hideToolbarTop: true),
     inAppWebViewGroupOptions: InAppWebViewGroupOptions(
       crossPlatform: InAppWebViewOptions(javaScriptEnabled: true),
     ),
@@ -41,9 +41,13 @@ class _StandardPaymentWidgetAppState extends State<StandardPaymentWidget>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(),
-      backgroundColor: Colors.white,
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height * .7,
+      child: Scaffold(
+        body: Container(),
+        backgroundColor: Colors.white,
+      ),
     );
   }
 }

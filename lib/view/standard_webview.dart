@@ -63,10 +63,12 @@ class _StandardWebViewAppState extends State<StandardWebView> {
     AppBar? appBar;
     if (widget.style != null) {
       appBar = AppBar(
-        title: Text(
-          widget.style!.getAppBarText(),
-          style: widget.style!.getAppBarTextStyle(),
-        ),
+        elevation: 0.0,
+        backgroundColor: Colors.transparent,
+        // title: Text(
+        //   widget.style!.getAppBarText(),
+        //   style: widget.style!.getAppBarTextStyle(),
+        // ),
       );
     }
 
